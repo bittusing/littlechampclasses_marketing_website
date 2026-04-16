@@ -20,7 +20,7 @@ const nunito = Nunito({
 
 export const metadata: Metadata = {
   title: {
-    default: `${site.name} | Ages 1–8 • IIT mentors`,
+    default: `${site.name} | Classes 1–8 • IIT mentors`,
     template: `%s | ${site.name}`,
   },
   description: site.description,

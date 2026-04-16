@@ -9,7 +9,7 @@ type VideoEngagementBarProps = {
 };
 
 export function VideoEngagementBar({
-  channelName = "Little Champ Classes",
+  channelName = "Little Champ Junior",
   className,
 }: VideoEngagementBarProps) {
   const [liked, setLiked] = useState(false);

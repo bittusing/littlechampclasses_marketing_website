@@ -7,7 +7,7 @@ import { cn } from "@/lib/cn";
 const faqs = [
   {
     q: "What subjects do you cover?",
-    a: "We focus on early numeracy, language, reasoning, and scientific curiosity—presented in a single integrated experience appropriate for ages 1–8.",
+    a: "We focus on early numeracy, language, reasoning, and scientific curiosity—presented in a single integrated experience appropriate for Classes 1–8.",
   },
   {
     q: "How long are classes?",

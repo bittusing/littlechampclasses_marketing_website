@@ -1,15 +1,15 @@
 export const site = {
-  name: "Little Champ Classes",
+  name: "Little Champ Junior",
   brandLine: "Online • IIT mentors",
   domain: "littlechampclasses.com",
   tagline: "Learning made fun for curious young minds",
   description:
-    "Live, interactive classes for ages 1–8—school readiness, maths, English, and hands-on activities led by caring IITians.",
+    "Live, interactive classes from 1–8—school readiness, maths, English, Science and hands-on activities led by caring IITians.",
   heroBannerSrc: "/hero-banner.svg",
   /** Home hero circle — full-bleed illustration inside rings. */
   heroCircleImageSrc:
     "/Exploring%20knowledge%20through%20interactive%20learning.png",
-  contactEmail: "hello@littlechampclasses.com",
+  contactEmail: "littlechampclasses@gmail.com",
 } as const;
 
 export type NavItem = { label: string; href: string };
