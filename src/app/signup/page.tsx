@@ -5,7 +5,7 @@ import { SignupForm } from "@/components/auth/SignupForm";
 
 export const metadata: Metadata = {
   title: "Sign up",
-  description: "Create a Little Champ Classes account.",
+  description: "Create a Little Champ Junior account.",
 };
 
 export default function SignupPage() {

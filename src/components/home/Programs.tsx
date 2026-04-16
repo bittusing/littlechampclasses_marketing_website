@@ -3,17 +3,17 @@ import { ButtonLink } from "@/components/ui/Button";
 
 const bands = [
   {
-    title: "Ages 1–3",
+    title: "Classes 1–3",
     subtitle: "Foundations through play",
     points: ["Sensory & language sparks", "Parent-partnered routines", "Short, lively sessions"],
   },
   {
-    title: "Ages 4–5",
+    title: "Classes 4–5",
     subtitle: "Pre-primary readiness",
     points: ["Early numeracy & patterns", "Stories & expression", "Focus without fatigue"],
   },
   {
-    title: "Ages 6–8",
+    title: "Classes 6–8",
     subtitle: "Growing independence",
     points: ["Core concepts with context", "Problem-solving habits", "Confidence in class"],
   },

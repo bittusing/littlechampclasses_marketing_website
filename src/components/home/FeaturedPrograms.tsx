@@ -87,7 +87,7 @@ export function FeaturedPrograms() {
                   `Program: ${a} + ${b} live sessions (${a + b} classes)`,
                   `Demo booking: ₹${c.priceRupees ?? 5}`,
                   "Small groups · IIT-trained mentors",
-                  "Ages 1–8 · paced batches",
+                  "Classes 1–8 · paced batches",
                 ];
               }
               const title = (c.marketingTitle ?? c.title ?? "Course").trim();

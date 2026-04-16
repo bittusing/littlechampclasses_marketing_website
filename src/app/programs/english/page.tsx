@@ -10,7 +10,7 @@ export default function EnglishPage() {
     <ProgramTemplate
       eyebrow="Program"
       title="Learn English"
-      description="Sounds, stories, and speaking confidence for ages 1–8—designed like the best global apps, taught by humans who care."
+      description="Sounds, stories, and speaking confidence for Classes 1–8—designed like the best global apps, taught by humans who care."
       bullets={[
         "Phonics and vocabulary through games",
         "Read-alouds that build listening stamina",

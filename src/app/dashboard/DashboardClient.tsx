@@ -154,7 +154,7 @@ export function DashboardClient() {
                           </div>
                         )}
                       </div>
-                      <VideoEngagementBar channelName="Little Champ Classes" />
+                      <VideoEngagementBar channelName="Little Champ Junior" />
                       {b.course?.classStartsAt ? (
                         <p className="border-t border-border-soft bg-surface-subtle/50 px-4 py-2 text-xs text-muted">
                           Scheduled window: {formatWhen(b.course.classStartsAt)}

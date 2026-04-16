@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Log in",
-  description: "Access your Little Champ Classes account.",
+  description: "Access your Little Champ Junior account.",
 };
 
 export default function LoginPage() {
