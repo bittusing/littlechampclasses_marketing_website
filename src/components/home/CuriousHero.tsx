@@ -27,11 +27,11 @@ export function CuriousHero() {
             <span className="font-semibold text-foreground/90">IIT mentors</span>.
           </p>
           <p className="mt-5 font-display text-lg font-bold text-foreground sm:text-xl">
-            <span className="scribble-underline">For Class 1 to 8</span>
+            <span className="scribble-underline">For Class 1st to 8th</span>
           </p>
           <div className="mt-8">
             <Link
-              href="/sponsor"
+              href="#programs"
               className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-primary px-8 text-base font-bold text-primary-foreground shadow-lg shadow-primary/25 transition hover:opacity-95 active:scale-[0.99]"
             >
               View Learning Programs

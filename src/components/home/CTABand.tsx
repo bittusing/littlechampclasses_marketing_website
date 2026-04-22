@@ -26,7 +26,7 @@ export function CTABand() {
               variant="secondary"
               className="min-h-12 min-w-[200px] border-0 bg-card text-foreground hover:opacity-95"
             >
-              View demo classes (₹5)
+              View demo classes (₹9)
             </ButtonLink>
             <ButtonLink
               href="/signup"

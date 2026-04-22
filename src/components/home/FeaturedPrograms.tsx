@@ -16,19 +16,15 @@ export function FeaturedPrograms() {
   const { courses, loading, error, reload } = useFeaturedCourses();
 
   return (
-    <section className="border-b border-border-soft bg-card/40 px-4 py-14 sm:px-6 sm:py-20">
+    <section id="programs" className="border-b border-border-soft bg-card/40 px-4 py-14 sm:px-6 sm:py-20">
       <div className="mx-auto max-w-6xl">
         <div className="text-center">
           <h2 className="font-display text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
             Pick a learning program &amp; get started!
           </h2>
           <p className="mx-auto mt-3 max-w-2xl text-base text-muted sm:text-lg">
-            Choose from our best courses for your kid <span aria-hidden>⭐</span>
+            Choose from our <strong className="text-primary">best</strong> courses for your kid <span aria-hidden>⭐</span>
             <span className="sr-only">star</span>
-          </p>
-          <p className="mx-auto mt-2 max-w-xl text-sm text-muted">
-            Data loads from the backend. Book a <strong className="text-primary">₹5</strong> demo on the sponsor
-            page—no payment gateway yet.
           </p>
         </div>
 
@@ -41,38 +37,9 @@ export function FeaturedPrograms() {
               />
             ))}
           </div>
-        ) : error ? (
-          <div className="mx-auto mt-12 max-w-lg rounded-2xl border border-border-soft bg-card p-6 text-center">
-            <p className="text-foreground">{error}</p>
-            <p className="mt-3 text-sm text-muted">
-              If this says &quot;Course not found&quot;, restart the API after updating code, or check{" "}
-              <code className="rounded bg-surface-subtle px-1">NEXT_PUBLIC_API_URL</code> matches your backend
-              port.
-            </p>
-            <button
-              type="button"
-              className="mt-4 text-sm font-bold text-primary"
-              onClick={() => void reload()}
-            >
-              Retry
-            </button>
-          </div>
         ) : courses.length === 0 ? (
           <div className="mx-auto mt-12 max-w-lg rounded-2xl border border-dashed border-border-soft bg-surface-subtle/50 p-8 text-center">
-            <p className="font-medium text-foreground">No courses returned for the homepage strip.</p>
-            <p className="mt-2 text-sm text-muted">
-              Seed MongoDB from the repo root:{" "}
-              <code className="rounded bg-card px-1 py-0.5 text-xs">npm run seed</code>
-              <br />
-              Ensure MongoDB is running and the API is up (e.g. port 4100).
-            </p>
-            <button
-              type="button"
-              className="mt-4 text-sm font-bold text-primary"
-              onClick={() => void reload()}
-            >
-              Retry
-            </button>
+            <p className="font-medium text-foreground">No courses available at the moment.</p>
           </div>
         ) : (
           <ul className="mt-12 grid gap-8 md:grid-cols-3">
@@ -85,7 +52,7 @@ export function FeaturedPrograms() {
                 const b = c.liveSessionsSecond ?? 6;
                 lines = [
                   `Program: ${a} + ${b} live sessions (${a + b} classes)`,
-                  `Demo booking: ₹${c.priceRupees ?? 5}`,
+                  `Demo booking: ₹${c.priceRupees ?? 9}`,
                   "Small groups · IIT-trained mentors",
                   "Classes 1–8 · paced batches",
                 ];
@@ -128,7 +95,7 @@ export function FeaturedPrograms() {
                       href={`/sponsor#program-${c.slug}`}
                       className="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-2xl bg-primary text-center text-base font-bold text-primary-foreground shadow-lg shadow-primary/25 transition hover:opacity-95"
                     >
-                      Book a Demo · ₹{c.priceRupees}
+                      Book a Demo
                     </Link>
                   </div>
                 </li>

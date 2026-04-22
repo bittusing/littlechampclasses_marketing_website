@@ -35,7 +35,7 @@ export const footerNav: { title: string; links: NavItem[] }[] = [
   {
     title: "Platform",
     links: [
-      { label: "Demo classes (₹5)", href: "/sponsor" },
+      { label: "Demo classes (₹9)", href: "/sponsor" },
       { label: "My dashboard", href: "/dashboard" },
     ],
   },
