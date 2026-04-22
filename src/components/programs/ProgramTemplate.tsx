@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { Section } from "@/components/layout/Section";
+import { ProgramPageDemoCta } from "@/components/programs/ProgramPageDemoCta";
 
 type ProgramTemplateProps = {
   title: string;
@@ -24,20 +24,7 @@ export function ProgramTemplate({ title, eyebrow, description, bullets }: Progra
           </li>
         ))}
       </ul>
-      <div className="mt-10 flex flex-wrap gap-3">
-        <Link
-          href="/sponsor"
-          className="inline-flex min-h-11 items-center justify-center rounded-xl bg-primary px-6 text-sm font-bold text-primary-foreground"
-        >
-          View demo on sponsor page
-        </Link>
-        <Link
-          href="/"
-          className="inline-flex min-h-11 items-center justify-center rounded-xl border-2 border-primary px-6 text-sm font-bold text-primary"
-        >
-          Back to home
-        </Link>
-      </div>
+      <ProgramPageDemoCta />
     </Section>
   );
 }

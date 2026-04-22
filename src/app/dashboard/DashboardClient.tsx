@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useBookDemoFlow } from "@/providers/BookDemoFlowProvider";
 import { useAuth } from "@/providers/AuthProvider";
 import { useMyBookings } from "@/hooks/useMyBookings";
 import { toYouTubeEmbed } from "@/lib/video";
@@ -20,6 +21,7 @@ const FALLBACK_THUMB = "/courses/thumb-stories.svg";
 
 export function DashboardClient() {
   const { user, token, loading: authLoading, logout } = useAuth();
+  const { openPicker } = useBookDemoFlow();
   const { bookings, loading, error, reload } = useMyBookings(token);
 
   if (authLoading) {
@@ -55,12 +57,13 @@ export function DashboardClient() {
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <Link
-            href="/sponsor"
+          <button
+            type="button"
+            onClick={() => openPicker()}
             className="inline-flex min-h-10 items-center justify-center rounded-xl bg-primary px-4 text-sm font-bold text-primary-foreground shadow-md shadow-primary/20"
           >
             Book another demo
-          </Link>
+          </button>
           <button
             type="button"
             className="rounded-xl border border-border-soft px-4 py-2 text-sm font-semibold text-muted hover:text-foreground"
@@ -97,9 +100,13 @@ export function DashboardClient() {
               {bookings.length === 0 ? (
                 <li className="rounded-2xl border border-dashed border-border-soft bg-card/60 p-8 text-center text-sm text-muted backdrop-blur-sm">
                   No bookings yet.{" "}
-                  <Link href="/sponsor" className="font-bold text-primary hover:underline">
+                  <button
+                    type="button"
+                    onClick={() => openPicker()}
+                    className="font-bold text-primary underline-offset-2 hover:underline"
+                  >
                     Browse demo courses
-                  </Link>
+                  </button>
                   .
                 </li>
               ) : (

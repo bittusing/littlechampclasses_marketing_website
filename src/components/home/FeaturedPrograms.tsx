@@ -1,10 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
-import { BookDemoModal } from "@/components/book-demo/BookDemoModal";
-import { useBookDemoFlow } from "@/hooks/useBookDemoFlow";
-import { useFeaturedCourses } from "@/hooks/useFeaturedCourses";
+import { isCourseBookable } from "@/components/book-demo/courseUtils";
+import { useBookDemoFlow } from "@/providers/BookDemoFlowProvider";
 import { cn } from "@/lib/cn";
 
 const BULLET_ICONS = ["📚", "📅", "👥", "✅"] as const;
@@ -19,8 +17,8 @@ const cardClassName =
   "flex w-full flex-col overflow-hidden items-stretch rounded-3xl border border-border-soft bg-card text-left shadow-[0_20px_50px_-24px_rgba(0,0,0,0.2)] transition hover:-translate-y-1 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring";
 
 export function FeaturedPrograms() {
-  const { courses, loading } = useFeaturedCourses();
-  const { selectedCourse, openBookDemo, closeBookDemo } = useBookDemoFlow();
+  const { courses, coursesLoading: loading, coursesError: loadError, openBookForCourse, openInterestForCourse } =
+    useBookDemoFlow();
 
   return (
     <section id="programs" className="border-b border-border-soft bg-card/40 px-4 py-14 sm:px-6 sm:py-20">
@@ -35,6 +33,10 @@ export function FeaturedPrograms() {
             <span className="sr-only">star</span>
           </p>
         </div>
+
+        {loadError ? (
+          <p className="mx-auto mt-8 max-w-lg text-center text-sm text-red-600 dark:text-red-400">{loadError}</p>
+        ) : null}
 
         {loading ? (
           <div className="mt-12 grid gap-8 md:grid-cols-3">
@@ -51,7 +53,7 @@ export function FeaturedPrograms() {
           </div>
         ) : (
           <ul className="mt-12 grid gap-8 md:grid-cols-3">
-            {courses.map((c) => {
+            {courses.map((c, index) => {
               const thumb = c.thumbnailUrl?.trim() || "/courses/thumb-stories.svg";
               const rawBullets = Array.isArray(c.marketingBullets) ? c.marketingBullets : [];
               let lines = rawBullets.map((b) => String(b).trim()).filter(Boolean).slice(0, 4);
@@ -66,7 +68,7 @@ export function FeaturedPrograms() {
                 ];
               }
               const title = (c.marketingTitle ?? c.title ?? "Course").trim();
-              const canBookDemo = c.bookDemoEnabled === true && c.batches.length > 0;
+              const canBookDemo = isCourseBookable(c);
 
               const inner = (
                 <>
@@ -77,7 +79,7 @@ export function FeaturedPrograms() {
                       fill
                       className="object-cover"
                       sizes="(max-width: 768px) 100vw, 33vw"
-                      // unoptimized={thumb.endsWith(".svg")}
+                      priority={index < 3}
                     />
                   </div>
                   <div className="flex flex-1 flex-col p-6">
@@ -103,8 +105,8 @@ export function FeaturedPrograms() {
                         Book a Demo
                       </span>
                     ) : (
-                      <span className="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-2xl border-2 border-border-soft bg-surface-subtle text-center text-base font-semibold text-foreground">
-                        View program
+                      <span className="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-2xl border-2 border-dashed border-amber-500/50 bg-amber-500/5 text-center text-base font-bold text-amber-800 dark:text-amber-200/90">
+                        Coming soon
                       </span>
                     )}
                   </div>
@@ -117,18 +119,20 @@ export function FeaturedPrograms() {
                     <button
                       type="button"
                       className={cn(cardClassName, "cursor-pointer")}
-                      style={{height: "stretch"}}
-                      onClick={() => openBookDemo(c)}
+                      style={{ height: "stretch" }}
+                      onClick={() => openBookForCourse(c)}
                     >
                       {inner}
                     </button>
                   ) : (
-                    <Link
-                      href={`/sponsor#program-${c.slug}`}
-                      className={cn(cardClassName, "block")}
+                    <button
+                      type="button"
+                      className={cn(cardClassName, "cursor-pointer border-dashed border-2")}
+                      style={{ height: "stretch" }}
+                      onClick={() => openInterestForCourse(c)}
                     >
                       {inner}
-                    </Link>
+                    </button>
                   )}
                 </li>
               );
@@ -136,8 +140,6 @@ export function FeaturedPrograms() {
           </ul>
         )}
       </div>
-
-      <BookDemoModal course={selectedCourse} onClose={closeBookDemo} />
     </section>
   );
 }

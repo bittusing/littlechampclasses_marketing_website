@@ -6,10 +6,12 @@ import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { ApiError } from "@/lib/api/types";
 import { useAuth } from "@/providers/AuthProvider";
+import { useBookDemoFlow } from "@/providers/BookDemoFlowProvider";
 
 export function LoginForm() {
   const router = useRouter();
   const { login } = useAuth();
+  const { openPicker } = useBookDemoFlow();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -75,9 +77,9 @@ export function LoginForm() {
           New here? Create an account
         </Link>
         {" · "}
-        <Link href="/sponsor" className="text-primary hover:underline">
+        <button type="button" onClick={() => openPicker()} className="text-primary hover:underline">
           Demo classes
-        </Link>
+        </button>
       </p>
     </form>
   );

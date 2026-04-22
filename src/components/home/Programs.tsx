@@ -1,5 +1,8 @@
+"use client";
+
 import { Section } from "@/components/layout/Section";
-import { ButtonLink } from "@/components/ui/Button";
+import { Button } from "@/components/ui/Button";
+import { useBookDemoFlow } from "@/providers/BookDemoFlowProvider";
 
 const bands = [
   {
@@ -20,8 +23,10 @@ const bands = [
 ];
 
 export function Programs() {
+  const { openPicker } = useBookDemoFlow();
+
   return (
-    <Section id="programs">
+    <Section id="programs-by-class">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h2 className="font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
@@ -32,9 +37,14 @@ export function Programs() {
             world.
           </p>
         </div>
-        <ButtonLink href="/sponsor" variant="secondary" className="shrink-0 self-start sm:self-auto">
+        <Button
+          type="button"
+          variant="secondary"
+          className="shrink-0 self-start sm:self-auto"
+          onClick={() => openPicker()}
+        >
           Book ₹9 demo
-        </ButtonLink>
+        </Button>
       </div>
       <div className="mt-10 grid gap-6 lg:grid-cols-3">
         {bands.map((b) => (
