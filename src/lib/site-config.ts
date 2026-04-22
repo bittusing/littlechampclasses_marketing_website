@@ -4,7 +4,8 @@ export const site = {
   domain: "littlechampclasses.com",
   tagline: "Learning made fun for curious young minds",
   description:
-    "Live, interactive classes from 1–8—school readiness, maths, English, Science and hands-on activities led by caring IITians.",
+    "Live, interactive classes from 1st–8th school readiness, maths, English, Science and hands-on activities led by caring IITians and NITians.",
+  playfulLittleChampLogoVersion: 2,
   heroBannerSrc: "/hero-banner.svg",
   /** Home hero circle — full-bleed illustration inside rings. */
   heroCircleImageSrc:

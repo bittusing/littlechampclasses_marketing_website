@@ -9,6 +9,16 @@ const nextConfig: NextConfig = {
     dangerouslyAllowSVG: true,
     contentDispositionType: "attachment",
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    /**
+     * Next.js 16+ requires local `next/image` src values to match `localPatterns`.
+     * Allow everything served from `public/` (root and subpaths). Omit `search` so
+     * cache-busting query strings (e.g. `?v=2` on the logo) are allowed too.
+     */
+    localPatterns: [
+      {
+        pathname: "/**",
+      },
+    ],
   },
 };
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { App as AntApp, Input, Modal } from "antd";
+import { App as AntApp, Input, Modal, Space } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -305,16 +305,25 @@ export function BookDemoModal({ course, onClose }: Props) {
 
                 <div>
                   <p className="text-sm font-semibold text-foreground">Mobile number</p>
-                  <Input
-                    size="large"
-                    className="mt-2 !rounded-xl"
-                    addonBefore="+91"
-                    placeholder="9876543210"
-                    maxLength={10}
-                    value={phoneNational}
-                    onChange={(e) => setPhoneNational(e.target.value.replace(/\D/g, "").slice(0, 10))}
-                    disabled={busy}
-                  />
+                  <Space.Compact className="mt-2 w-full" block>
+                    <Input
+                      readOnly
+                      value="+91"
+                      size="large"
+                      className="!w-[4.5rem] !rounded-l-xl !text-center"
+                      tabIndex={-1}
+                      disabled={busy}
+                    />
+                    <Input
+                      size="large"
+                      className="!min-w-0 !flex-1 !rounded-r-xl"
+                      placeholder="9876543210"
+                      maxLength={10}
+                      value={phoneNational}
+                      onChange={(e) => setPhoneNational(e.target.value.replace(/\D/g, "").slice(0, 10))}
+                      disabled={busy}
+                    />
+                  </Space.Compact>
                   <p className="mt-2 text-xs text-muted">
                     Course material and updates will be shared via WhatsApp on this number.
                   </p>

@@ -77,7 +77,7 @@ export function FeaturedPrograms() {
                       fill
                       className="object-cover"
                       sizes="(max-width: 768px) 100vw, 33vw"
-                      unoptimized={thumb.endsWith(".svg")}
+                      // unoptimized={thumb.endsWith(".svg")}
                     />
                   </div>
                   <div className="flex flex-1 flex-col p-6">
