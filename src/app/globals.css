@@ -1,3 +1,8 @@
+/* Layer order: Ant Design global resets (e.g. `a { color, background }`) must stay below
+   Tailwind `@layer utilities` or they override `bg-primary` / `text-primary-foreground` on
+   `next/link`. `StyleProvider` in Providers.tsx wraps antd styles in `@layer antd`. */
+@layer antd, theme, base, components, utilities;
+
 @import "tailwindcss";
 
 :root {

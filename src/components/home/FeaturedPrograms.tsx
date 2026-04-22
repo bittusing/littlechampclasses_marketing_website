@@ -2,7 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { BookDemoModal } from "@/components/book-demo/BookDemoModal";
+import { useBookDemoFlow } from "@/hooks/useBookDemoFlow";
 import { useFeaturedCourses } from "@/hooks/useFeaturedCourses";
+import { cn } from "@/lib/cn";
 
 const BULLET_ICONS = ["📚", "📅", "👥", "✅"] as const;
 const BULLET_BG = [
@@ -12,8 +15,12 @@ const BULLET_BG = [
   "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-200",
 ] as const;
 
+const cardClassName =
+  "flex w-full flex-col overflow-hidden items-stretch rounded-3xl border border-border-soft bg-card text-left shadow-[0_20px_50px_-24px_rgba(0,0,0,0.2)] transition hover:-translate-y-1 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring";
+
 export function FeaturedPrograms() {
-  const { courses, loading, error, reload } = useFeaturedCourses();
+  const { courses, loading } = useFeaturedCourses();
+  const { selectedCourse, openBookDemo, closeBookDemo } = useBookDemoFlow();
 
   return (
     <section id="programs" className="border-b border-border-soft bg-card/40 px-4 py-14 sm:px-6 sm:py-20">
@@ -23,7 +30,8 @@ export function FeaturedPrograms() {
             Pick a learning program &amp; get started!
           </h2>
           <p className="mx-auto mt-3 max-w-2xl text-base text-muted sm:text-lg">
-            Choose from our <strong className="text-primary">best</strong> courses for your kid <span aria-hidden>⭐</span>
+            Choose from our <strong className="text-primary">best</strong> courses for your kid{" "}
+            <span aria-hidden>⭐</span>
             <span className="sr-only">star</span>
           </p>
         </div>
@@ -58,11 +66,10 @@ export function FeaturedPrograms() {
                 ];
               }
               const title = (c.marketingTitle ?? c.title ?? "Course").trim();
-              return (
-                <li
-                  key={c.id}
-                  className="flex flex-col overflow-hidden rounded-3xl border border-border-soft bg-card shadow-[0_20px_50px_-24px_rgba(0,0,0,0.2)] transition hover:-translate-y-1 hover:shadow-xl"
-                >
+              const canBookDemo = c.bookDemoEnabled === true && c.batches.length > 0;
+
+              const inner = (
+                <>
                   <div className="relative aspect-[4/3] bg-surface-subtle">
                     <Image
                       src={thumb}
@@ -91,19 +98,46 @@ export function FeaturedPrograms() {
                         </li>
                       ))}
                     </ul>
+                    {canBookDemo ? (
+                      <span className="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-2xl bg-primary text-center text-base font-bold text-primary-foreground shadow-lg shadow-primary/25 pointer-events-none">
+                        Book a Demo
+                      </span>
+                    ) : (
+                      <span className="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-2xl border-2 border-border-soft bg-surface-subtle text-center text-base font-semibold text-foreground">
+                        View program
+                      </span>
+                    )}
+                  </div>
+                </>
+              );
+
+              return (
+                <li key={c.id}>
+                  {canBookDemo ? (
+                    <button
+                      type="button"
+                      className={cn(cardClassName, "cursor-pointer")}
+                      style={{height: "stretch"}}
+                      onClick={() => openBookDemo(c)}
+                    >
+                      {inner}
+                    </button>
+                  ) : (
                     <Link
                       href={`/sponsor#program-${c.slug}`}
-                      className="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-2xl bg-primary text-center text-base font-bold text-primary-foreground shadow-lg shadow-primary/25 transition hover:opacity-95"
+                      className={cn(cardClassName, "block")}
                     >
-                      Book a Demo
+                      {inner}
                     </Link>
-                  </div>
+                  )}
                 </li>
               );
             })}
           </ul>
         )}
       </div>
+
+      <BookDemoModal course={selectedCourse} onClose={closeBookDemo} />
     </section>
   );
 }

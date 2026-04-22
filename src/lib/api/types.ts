@@ -5,6 +5,15 @@ export type ApiUser = {
   createdAt?: string;
 };
 
+export type ApiCourseBatch = {
+  id: string;
+  code: string;
+  startsAt: string;
+  endsAt: string;
+  dateRangeLabel: string;
+  bookingHeadingDefault: string;
+};
+
 export type ApiCourse = {
   id: string;
   title: string;
@@ -14,6 +23,8 @@ export type ApiCourse = {
   track: string;
   pricePaise: number;
   priceRupees: number;
+  compareAtPricePaise: number | null;
+  compareAtPriceRupees: number | null;
   liveSessionsFirst: number;
   liveSessionsSecond: number;
   totalLiveSessions: number;
@@ -24,6 +35,8 @@ export type ApiCourse = {
   marketingBullets: string[];
   classStartsAt: string | null;
   isActive: boolean;
+  bookDemoEnabled: boolean;
+  batches: ApiCourseBatch[];
 };
 
 export type ApiBooking = {
