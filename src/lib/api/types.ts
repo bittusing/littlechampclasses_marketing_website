@@ -1,7 +1,12 @@
 export type ApiUser = {
   id: string;
-  email: string;
-  name: string;
+  phoneE164: string;
+  /** 10-digit national number (India) */
+  phoneNational10: string;
+  childName: string;
+  learningGoal: string;
+  childGrade: number | null;
+  profileComplete: boolean;
   createdAt?: string;
 };
 

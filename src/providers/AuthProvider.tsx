@@ -10,6 +10,7 @@ import {
   type ReactNode,
 } from "react";
 import { apiFetch } from "@/lib/api/client";
+import { patchUserProfile, verifyAuthOtp } from "@/lib/api/auth";
 import type { ApiUser } from "@/lib/api/types";
 
 const STORAGE_KEY = "lcc_token";
@@ -18,8 +19,12 @@ type AuthContextValue = {
   token: string | null;
   user: ApiUser | null;
   loading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  register: (name: string, email: string, password: string) => Promise<void>;
+  signInWithOtp: (phoneNational10: string, code: string) => Promise<{ needsOnboarding: boolean }>;
+  completeOnboarding: (input: {
+    childName: string;
+    learningGoal: string;
+    childGrade: number;
+  }) => Promise<void>;
   logout: () => void;
   refreshUser: () => Promise<void>;
 };
@@ -85,37 +90,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  const login = useCallback(async (email: string, password: string) => {
-    const data = await apiFetch<{ token: string; user: ApiUser }>("/api/auth/login", {
-      method: "POST",
-      body: JSON.stringify({ email, password }),
-    });
+  const signInWithOtp = useCallback(async (phoneNational10: string, code: string) => {
+    const data = await verifyAuthOtp({ phone: phoneNational10, code });
     window.localStorage.setItem(STORAGE_KEY, data.token);
     setToken(data.token);
     setUser(data.user);
+    return { needsOnboarding: data.needsOnboarding };
   }, []);
 
-  const register = useCallback(async (name: string, email: string, password: string) => {
-    const data = await apiFetch<{ token: string; user: ApiUser }>("/api/auth/register", {
-      method: "POST",
-      body: JSON.stringify({ name, email, password }),
-    });
-    window.localStorage.setItem(STORAGE_KEY, data.token);
-    setToken(data.token);
-    setUser(data.user);
-  }, []);
+  const completeOnboarding = useCallback(
+    async (input: { childName: string; learningGoal: string; childGrade: number }) => {
+      const t = window.localStorage.getItem(STORAGE_KEY);
+      if (!t) throw new Error("Not signed in");
+      const { user: next } = await patchUserProfile(input, t);
+      setUser(next);
+    },
+    [],
+  );
 
   const value = useMemo(
     () => ({
       token,
       user,
       loading,
-      login,
-      register,
+      signInWithOtp,
+      completeOnboarding,
       logout,
       refreshUser,
     }),
-    [token, user, loading, login, register, logout, refreshUser],
+    [token, user, loading, signInWithOtp, completeOnboarding, logout, refreshUser],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
