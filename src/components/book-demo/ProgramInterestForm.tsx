@@ -163,7 +163,7 @@ export function ProgramInterestForm({ course, onClose, onBackToPrograms }: Progr
               </>
             )}
           </div>
-          <button
+          {/* <button
             type="button"
             onClick={onClose}
             disabled={busy}
@@ -173,7 +173,7 @@ export function ProgramInterestForm({ course, onClose, onBackToPrograms }: Progr
             <span aria-hidden className="text-xl leading-none">
               ×
             </span>
-          </button>
+          </button> */}
         </div>
 
         <div className="h-px w-full bg-border-soft" />

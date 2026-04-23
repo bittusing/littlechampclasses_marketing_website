@@ -230,7 +230,7 @@ export function BookDemoCheckoutContent({ course, onClose, onBackToPrograms }: B
               </>
             )}
           </div>
-          <button
+          {/* <button
             type="button"
             onClick={handleClose}
             className="rounded-full p-2 text-muted transition hover:bg-surface-subtle hover:text-foreground"
@@ -239,7 +239,7 @@ export function BookDemoCheckoutContent({ course, onClose, onBackToPrograms }: B
             <span aria-hidden className="text-xl leading-none">
               ×
             </span>
-          </button>
+          </button> */}
         </div>
 
         {step === "form" && (
