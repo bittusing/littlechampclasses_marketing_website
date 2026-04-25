@@ -67,6 +67,60 @@ export type ApiBooking = {
   } | null;
 };
 
+export type ApiLearnerClassSession = {
+  id: string;
+  title: string;
+  subject: string;
+  startsAt: string;
+  startsAtLabel: string;
+  durationMinutes: number;
+  durationLabel: string;
+  teacherName: string;
+  teacherImageUrl: string;
+  statusMicrocopy: string;
+  hasAttachments: boolean;
+};
+
+export type ApiLearnerEnrollmentSummary = {
+  enrollmentId: string;
+  batchId: string;
+  courseId: string;
+  courseTitle: string;
+  batchCode: string;
+  dateRangeLabel: string;
+  startsAt: string;
+  endsAt: string;
+  purchasedAt: string;
+};
+
+export type ApiLearnerDashboard = {
+  hasPurchases: boolean;
+  enrollments: ApiLearnerEnrollmentSummary[];
+  defaultBatchId: string | null;
+  selectedBatchId: string | null;
+  todaySessions: ApiLearnerClassSession[];
+  weekHints: {
+    todayYmd: string;
+    weekMondayYmd: string;
+  };
+};
+
+export type ApiScheduleDay = {
+  ymd: string;
+  dateLabel: string;
+  weekdayShort: string;
+  relativeLabel?: "Yesterday" | "Today" | "Tomorrow";
+  sessions: ApiLearnerClassSession[];
+};
+
+export type ApiWeekSchedule = {
+  timeZone: string;
+  weekStartYmd: string;
+  weekRangeLabel: string;
+  weekOffset: number | null;
+  days: ApiScheduleDay[];
+};
+
 export class ApiError extends Error {
   constructor(
     public status: number,

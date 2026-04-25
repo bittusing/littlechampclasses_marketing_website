@@ -39,7 +39,7 @@ export function Programs() {
         </div>
         <Button
           type="button"
-          variant="secondary"
+          variant="primary"
           className="shrink-0 self-start sm:self-auto"
           onClick={() => openPicker()}
         >
