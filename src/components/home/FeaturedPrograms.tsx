@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
-import { useFeaturedCourses } from "@/hooks/useFeaturedCourses";
+import { isCourseBookable } from "@/components/book-demo/courseUtils";
+import { useBookDemoFlow } from "@/providers/BookDemoFlowProvider";
+import { cn } from "@/lib/cn";
 
 const BULLET_ICONS = ["📚", "📅", "👥", "✅"] as const;
 const BULLET_BG = [
@@ -12,25 +13,30 @@ const BULLET_BG = [
   "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-200",
 ] as const;
 
+const cardClassName =
+  "flex w-full flex-col overflow-hidden items-stretch rounded-3xl border border-border-soft bg-card text-left shadow-[0_20px_50px_-24px_rgba(0,0,0,0.2)] transition hover:-translate-y-1 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring";
+
 export function FeaturedPrograms() {
-  const { courses, loading, error, reload } = useFeaturedCourses();
+  const { courses, coursesLoading: loading, coursesError: loadError, openBookForCourse, openInterestForCourse } =
+    useBookDemoFlow();
 
   return (
-    <section className="border-b border-border-soft bg-card/40 px-4 py-14 sm:px-6 sm:py-20">
+    <section id="programs" className="border-b border-border-soft bg-card/40 px-4 py-14 sm:px-6 sm:py-20">
       <div className="mx-auto max-w-6xl">
         <div className="text-center">
           <h2 className="font-display text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
             Pick a learning program &amp; get started!
           </h2>
           <p className="mx-auto mt-3 max-w-2xl text-base text-muted sm:text-lg">
-            Choose from our best courses for your kid <span aria-hidden>⭐</span>
+            Choose from our <strong className="text-primary">best</strong> courses for your kid{" "}
+            <span aria-hidden>⭐</span>
             <span className="sr-only">star</span>
           </p>
-          <p className="mx-auto mt-2 max-w-xl text-sm text-muted">
-            Data loads from the backend. Book a <strong className="text-primary">₹5</strong> demo on the sponsor
-            page—no payment gateway yet.
-          </p>
         </div>
+
+        {loadError ? (
+          <p className="mx-auto mt-8 max-w-lg text-center text-sm text-red-600 dark:text-red-400">{loadError}</p>
+        ) : null}
 
         {loading ? (
           <div className="mt-12 grid gap-8 md:grid-cols-3">
@@ -41,42 +47,13 @@ export function FeaturedPrograms() {
               />
             ))}
           </div>
-        ) : error ? (
-          <div className="mx-auto mt-12 max-w-lg rounded-2xl border border-border-soft bg-card p-6 text-center">
-            <p className="text-foreground">{error}</p>
-            <p className="mt-3 text-sm text-muted">
-              If this says &quot;Course not found&quot;, restart the API after updating code, or check{" "}
-              <code className="rounded bg-surface-subtle px-1">NEXT_PUBLIC_API_URL</code> matches your backend
-              port.
-            </p>
-            <button
-              type="button"
-              className="mt-4 text-sm font-bold text-primary"
-              onClick={() => void reload()}
-            >
-              Retry
-            </button>
-          </div>
         ) : courses.length === 0 ? (
           <div className="mx-auto mt-12 max-w-lg rounded-2xl border border-dashed border-border-soft bg-surface-subtle/50 p-8 text-center">
-            <p className="font-medium text-foreground">No courses returned for the homepage strip.</p>
-            <p className="mt-2 text-sm text-muted">
-              Seed MongoDB from the repo root:{" "}
-              <code className="rounded bg-card px-1 py-0.5 text-xs">npm run seed</code>
-              <br />
-              Ensure MongoDB is running and the API is up (e.g. port 4100).
-            </p>
-            <button
-              type="button"
-              className="mt-4 text-sm font-bold text-primary"
-              onClick={() => void reload()}
-            >
-              Retry
-            </button>
+            <p className="font-medium text-foreground">No courses available at the moment.</p>
           </div>
         ) : (
           <ul className="mt-12 grid gap-8 md:grid-cols-3">
-            {courses.map((c) => {
+            {courses.map((c, index) => {
               const thumb = c.thumbnailUrl?.trim() || "/courses/thumb-stories.svg";
               const rawBullets = Array.isArray(c.marketingBullets) ? c.marketingBullets : [];
               let lines = rawBullets.map((b) => String(b).trim()).filter(Boolean).slice(0, 4);
@@ -85,17 +62,16 @@ export function FeaturedPrograms() {
                 const b = c.liveSessionsSecond ?? 6;
                 lines = [
                   `Program: ${a} + ${b} live sessions (${a + b} classes)`,
-                  `Demo booking: ₹${c.priceRupees ?? 5}`,
+                  `Demo booking: ₹${c.priceRupees ?? 9}`,
                   "Small groups · IIT-trained mentors",
                   "Classes 1–8 · paced batches",
                 ];
               }
               const title = (c.marketingTitle ?? c.title ?? "Course").trim();
-              return (
-                <li
-                  key={c.id}
-                  className="flex flex-col overflow-hidden rounded-3xl border border-border-soft bg-card shadow-[0_20px_50px_-24px_rgba(0,0,0,0.2)] transition hover:-translate-y-1 hover:shadow-xl"
-                >
+              const canBookDemo = isCourseBookable(c);
+
+              const inner = (
+                <>
                   <div className="relative aspect-[4/3] bg-surface-subtle">
                     <Image
                       src={thumb}
@@ -103,7 +79,7 @@ export function FeaturedPrograms() {
                       fill
                       className="object-cover"
                       sizes="(max-width: 768px) 100vw, 33vw"
-                      unoptimized={thumb.endsWith(".svg")}
+                      priority={index < 3}
                     />
                   </div>
                   <div className="flex flex-1 flex-col p-6">
@@ -124,13 +100,40 @@ export function FeaturedPrograms() {
                         </li>
                       ))}
                     </ul>
-                    <Link
-                      href={`/sponsor#program-${c.slug}`}
-                      className="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-2xl bg-primary text-center text-base font-bold text-primary-foreground shadow-lg shadow-primary/25 transition hover:opacity-95"
-                    >
-                      Book a Demo · ₹{c.priceRupees}
-                    </Link>
+                    {canBookDemo ? (
+                      <span className="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-2xl bg-primary text-center text-base font-bold text-primary-foreground shadow-lg shadow-primary/25 pointer-events-none">
+                        Book a Demo
+                      </span>
+                    ) : (
+                      <span className="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-2xl border-2 border-dashed border-amber-500/50 bg-amber-500/5 text-center text-base font-bold text-amber-800 dark:text-amber-200/90">
+                        Coming soon
+                      </span>
+                    )}
                   </div>
+                </>
+              );
+
+              return (
+                <li key={c.id}>
+                  {canBookDemo ? (
+                    <button
+                      type="button"
+                      className={cn(cardClassName, "cursor-pointer")}
+                      style={{ height: "stretch" }}
+                      onClick={() => openBookForCourse(c)}
+                    >
+                      {inner}
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className={cn(cardClassName, "cursor-pointer border-dashed border-2")}
+                      style={{ height: "stretch" }}
+                      onClick={() => openInterestForCourse(c)}
+                    >
+                      {inner}
+                    </button>
+                  )}
                 </li>
               );
             })}

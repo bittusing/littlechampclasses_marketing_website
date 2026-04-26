@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Sans, Nunito } from "next/font/google";
 import "./globals.css";
-import { SiteFooter } from "@/components/layout/SiteFooter";
-import { SiteHeader } from "@/components/layout/SiteHeader";
 import { site } from "@/lib/site-config";
 import { Providers } from "@/providers/Providers";
 
@@ -41,9 +39,7 @@ export default function RootLayout({
       {/* suppressHydrationWarning: browser extensions (e.g. ColorZilla) may inject attributes like cz-shortcut-listen on <body> before React hydrates. */}
       <body className="flex min-h-full flex-col" suppressHydrationWarning>
         <Providers>
-          <SiteHeader />
-          <main className="flex-1">{children}</main>
-          <SiteFooter />
+          {children}
         </Providers>
       </body>
     </html>

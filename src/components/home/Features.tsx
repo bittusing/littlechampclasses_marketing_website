@@ -2,7 +2,7 @@ import { Section } from "@/components/layout/Section";
 
 const items = [
   {
-    title: "IIT mentors who love teaching kids",
+    title: "IIT / NIT mentors who love teaching kids",
     body: "Bite-sized, visual steps so young minds stay curious—not overwhelmed.",
     icon: "🎓",
     tone: "from-primary/20 to-accent/10",

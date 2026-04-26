@@ -11,10 +11,10 @@ export function Logo() {
     >
       <span className="inline-flex h-12 max-w-[min(92vw,420px)] shrink-0 sm:h-14 md:h-16 lg:h-[4.5rem]">
         <Image
-          src="/playful-little-champ-logo.png"
+          src={`/playful-little-champ-logo.png?v=${site.playfulLittleChampLogoVersion}`}
           alt={site.name}
-          width={640}
-          height={228}
+          width={740}
+          height={290}
           priority
           sizes="(max-width: 640px) 92vw, 420px"
           className="h-full w-auto max-w-full object-contain object-left"

@@ -1,8 +1,22 @@
 export type ApiUser = {
   id: string;
-  email: string;
-  name: string;
+  phoneE164: string;
+  /** 10-digit national number (India) */
+  phoneNational10: string;
+  childName: string;
+  learningGoal: string;
+  childGrade: number | null;
+  profileComplete: boolean;
   createdAt?: string;
+};
+
+export type ApiCourseBatch = {
+  id: string;
+  code: string;
+  startsAt: string;
+  endsAt: string;
+  dateRangeLabel: string;
+  bookingHeadingDefault: string;
 };
 
 export type ApiCourse = {
@@ -14,6 +28,8 @@ export type ApiCourse = {
   track: string;
   pricePaise: number;
   priceRupees: number;
+  compareAtPricePaise: number | null;
+  compareAtPriceRupees: number | null;
   liveSessionsFirst: number;
   liveSessionsSecond: number;
   totalLiveSessions: number;
@@ -24,6 +40,8 @@ export type ApiCourse = {
   marketingBullets: string[];
   classStartsAt: string | null;
   isActive: boolean;
+  bookDemoEnabled: boolean;
+  batches: ApiCourseBatch[];
 };
 
 export type ApiBooking = {
@@ -47,6 +65,60 @@ export type ApiBooking = {
     totalLiveSessions: number;
     classStartsAt: string | null;
   } | null;
+};
+
+export type ApiLearnerClassSession = {
+  id: string;
+  title: string;
+  subject: string;
+  startsAt: string;
+  startsAtLabel: string;
+  durationMinutes: number;
+  durationLabel: string;
+  teacherName: string;
+  teacherImageUrl: string;
+  statusMicrocopy: string;
+  hasAttachments: boolean;
+};
+
+export type ApiLearnerEnrollmentSummary = {
+  enrollmentId: string;
+  batchId: string;
+  courseId: string;
+  courseTitle: string;
+  batchCode: string;
+  dateRangeLabel: string;
+  startsAt: string;
+  endsAt: string;
+  purchasedAt: string;
+};
+
+export type ApiLearnerDashboard = {
+  hasPurchases: boolean;
+  enrollments: ApiLearnerEnrollmentSummary[];
+  defaultBatchId: string | null;
+  selectedBatchId: string | null;
+  todaySessions: ApiLearnerClassSession[];
+  weekHints: {
+    todayYmd: string;
+    weekMondayYmd: string;
+  };
+};
+
+export type ApiScheduleDay = {
+  ymd: string;
+  dateLabel: string;
+  weekdayShort: string;
+  relativeLabel?: "Yesterday" | "Today" | "Tomorrow";
+  sessions: ApiLearnerClassSession[];
+};
+
+export type ApiWeekSchedule = {
+  timeZone: string;
+  weekStartYmd: string;
+  weekRangeLabel: string;
+  weekOffset: number | null;
+  days: ApiScheduleDay[];
 };
 
 export class ApiError extends Error {

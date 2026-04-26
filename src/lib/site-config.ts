@@ -4,7 +4,8 @@ export const site = {
   domain: "littlechampclasses.com",
   tagline: "Learning made fun for curious young minds",
   description:
-    "Live, interactive classes from 1–8—school readiness, maths, English, Science and hands-on activities led by caring IITians.",
+    "Live, interactive classes from 1st–8th school readiness, maths, English, Science and hands-on activities led by caring IITians and NITians.",
+  playfulLittleChampLogoVersion: 2,
   heroBannerSrc: "/hero-banner.svg",
   /** Home hero circle — full-bleed illustration inside rings. */
   heroCircleImageSrc:
@@ -14,6 +15,9 @@ export const site = {
 
 export type NavItem = { label: string; href: string };
 
+/** Footer & nav items that open the in-app book-demo flow instead of navigating. */
+export type FooterOrActionLink = NavItem | { label: string; openBookDemo: true };
+
 /** CuriousJr-style primary nav */
 export const mainNav: NavItem[] = [
   { label: "After-School", href: "/programs/after-school" },
@@ -22,7 +26,7 @@ export const mainNav: NavItem[] = [
   { label: "Activity Kits", href: "/programs/activity-kits" },
 ];
 
-export const footerNav: { title: string; links: NavItem[] }[] = [
+export const footerNav: { title: string; links: FooterOrActionLink[] }[] = [
   {
     title: "Programs",
     links: [
@@ -35,7 +39,7 @@ export const footerNav: { title: string; links: NavItem[] }[] = [
   {
     title: "Platform",
     links: [
-      { label: "Demo classes (₹5)", href: "/sponsor" },
+      { label: "Demo classes (₹9)", openBookDemo: true },
       { label: "My dashboard", href: "/dashboard" },
     ],
   },

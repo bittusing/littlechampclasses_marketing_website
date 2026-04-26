@@ -1,40 +1,50 @@
+"use client";
+
 import { Section } from "@/components/layout/Section";
-import { ButtonLink } from "@/components/ui/Button";
+import { Button } from "@/components/ui/Button";
+import { useBookDemoFlow } from "@/providers/BookDemoFlowProvider";
 
 const bands = [
   {
-    title: "Classes 1–3",
+    title: "Class 1st–3rd",
     subtitle: "Foundations through play",
     points: ["Sensory & language sparks", "Parent-partnered routines", "Short, lively sessions"],
   },
   {
-    title: "Classes 4–5",
+    title: "Class 4th–5th",
     subtitle: "Pre-primary readiness",
     points: ["Early numeracy & patterns", "Stories & expression", "Focus without fatigue"],
   },
   {
-    title: "Classes 6–8",
+    title: "Class 6th–8th",
     subtitle: "Growing independence",
     points: ["Core concepts with context", "Problem-solving habits", "Confidence in class"],
   },
 ];
 
 export function Programs() {
+  const { openPicker } = useBookDemoFlow();
+
   return (
-    <Section id="programs">
+    <Section id="programs-by-class">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h2 className="font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Programs by age
+            Programs by Classe
           </h2>
           <p className="mt-2 max-w-xl text-muted">
             Pick the band that matches your child—we tailor pacing, examples, and homework to their
             world.
           </p>
         </div>
-        <ButtonLink href="/sponsor" variant="secondary" className="shrink-0 self-start sm:self-auto">
-          Book ₹5 demo
-        </ButtonLink>
+        <Button
+          type="button"
+          variant="primary"
+          className="shrink-0 self-start sm:self-auto"
+          onClick={() => openPicker()}
+        >
+          Book ₹9 demo
+        </Button>
       </div>
       <div className="mt-10 grid gap-6 lg:grid-cols-3">
         {bands.map((b) => (

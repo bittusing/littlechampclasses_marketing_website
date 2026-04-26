@@ -45,7 +45,7 @@ export function SponsorClient() {
     setErr(null);
     setBookingId(courseId);
     if (!token) {
-      setErr("Please log in or register to book this ₹5 demo.");
+      setErr("Please log in or register to book this ₹9 demo.");
       setBookingId(null);
       return;
     }
@@ -70,7 +70,7 @@ export function SponsorClient() {
       <div className="max-w-3xl">
         <p className="text-sm font-semibold uppercase tracking-wide text-primary">Demo courses</p>
         <h1 className="mt-2 font-display text-3xl font-extrabold text-foreground sm:text-4xl">
-          Book for <span className="text-primary">₹5</span> — join the class list
+          Book for <span className="text-primary">₹9</span> — join the class list
         </h1>
         <p className="mt-3 text-muted">
           All copy below is stored in <strong className="text-foreground">MongoDB</strong> and served by the backend.
@@ -85,7 +85,7 @@ export function SponsorClient() {
           <Link href="/login" className="font-bold text-primary hover:underline">
             Log in / Register
           </Link>{" "}
-          to book. ₹5 is recorded as a demo fee in the database; checkout comes later.
+          to book. ₹9 is recorded as a demo fee in the database; checkout comes later.
         </div>
       ) : null}
 
