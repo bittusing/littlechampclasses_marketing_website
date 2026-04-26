@@ -79,6 +79,11 @@ export type ApiLearnerClassSession = {
   teacherImageUrl: string;
   statusMicrocopy: string;
   hasAttachments: boolean;
+  /** YYYY-MM-DD in SCHEDULE_TZ for this session. */
+  scheduleDateYmd: string;
+  /** e.g. "25 Apr · Sat" */
+  dayLabel: string;
+  isTomorrow: boolean;
 };
 
 export type ApiLearnerEnrollmentSummary = {
@@ -99,6 +104,8 @@ export type ApiLearnerDashboard = {
   defaultBatchId: string | null;
   selectedBatchId: string | null;
   todaySessions: ApiLearnerClassSession[];
+  /** Next 7 days after end of “today” in SCHEDULE_TZ; used when today has no classes. */
+  upcomingSessions: ApiLearnerClassSession[];
   weekHints: {
     todayYmd: string;
     weekMondayYmd: string;

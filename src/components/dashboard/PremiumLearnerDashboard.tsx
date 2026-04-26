@@ -104,7 +104,9 @@ export function PremiumLearnerDashboard({
         <Select
           size="large"
           className="w-full border-2 border-border-soft bg-card rounded-xl px-4 py-2 shadow-sm transition duration-200 hover:border-primary/40 focus:border-primary focus:shadow-md focus:shadow-primary/20"
-          dropdownClassName="px-4 py-2 text-sm bg-primary/10"
+          classNames={{
+            popup: { root: "px-4 py-2 text-sm bg-primary/10" },
+          }}
           options={selectOptions}
           value={selectValue}
           onChange={onSelect}
@@ -120,7 +122,11 @@ export function PremiumLearnerDashboard({
             Your classes
           </h2>
         </div>
-        <p className="mt-1 text-sm text-muted">Everything scheduled for today in the batch you selected.</p>
+        <p className="mt-1 text-sm text-muted">
+          {data.todaySessions.length > 0
+            ? "Today’s schedule for the batch you selected."
+            : "When there’s no class today, we show the next sessions in the next 7 days."}
+        </p>
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
           {loading ? (
@@ -128,21 +134,25 @@ export function PremiumLearnerDashboard({
               <Skeleton active paragraph={{ rows: 3 }} className="rounded-2xl border border-border-soft bg-card p-4" />
               <Skeleton active paragraph={{ rows: 3 }} className="rounded-2xl border border-border-soft bg-card p-4" />
             </>
-          ) : data.todaySessions.length === 0 ? (
+          ) : data.todaySessions.length > 0 ? (
+            data.todaySessions.map((session) => (
+              <LearnerClassCard key={session.id} session={session} mode="today" />
+            ))
+          ) : data.upcomingSessions.length > 0 ? (
+            data.upcomingSessions.map((session) => (
+              <LearnerClassCard key={session.id} session={session} mode="upcoming" />
+            ))
+          ) : (
             <div className="col-span-full rounded-2xl border border-dashed border-border-soft bg-surface-subtle/60 px-6 py-14 text-center dark:bg-card">
-              <p className="font-display text-lg font-semibold text-foreground">No classes today</p>
+              <p className="font-display text-lg font-semibold text-foreground">No classes in the next week</p>
               <p className="mx-auto mt-2 max-w-md text-sm text-muted">
-                There&apos;s nothing on the calendar for this batch today. Check the weekly schedule for the rest
-                of the week, or pick another enrolled program above.
+                There&apos;s nothing on the calendar for this batch in the next 7 days. Check the full weekly
+                schedule or pick another enrolled program above.
               </p>
               <Button type="primary" className="mt-6 !rounded-xl" onClick={openScheduleDrawer}>
                 Open weekly schedule
               </Button>
             </div>
-          ) : (
-            data.todaySessions.map((session) => (
-              <TodayClassCard key={session.id} session={session} />
-            ))
           )}
         </div>
 
@@ -170,7 +180,7 @@ export function PremiumLearnerDashboard({
           <span className="font-display text-lg font-bold text-foreground">Weekly schedule</span>
         }
         placement="right"
-        width={420}
+        size={420}
         onClose={closeScheduleDrawer}
         open={drawerOpen}
         destroyOnClose
@@ -204,13 +214,13 @@ export function PremiumLearnerDashboard({
           </Button>
           <div className="flex-1 text-center">
             <p className="text-xs font-semibold uppercase tracking-wide text-muted">Selected week</p>
-            <p className="text-sm font-bold text-foreground">
+            <div className="text-sm font-bold text-foreground">
               {weekLoading && !weekData ? (
                 <Skeleton.Button active size="small" className="!w-40" />
               ) : (
                 weekData?.weekRangeLabel ?? "—"
               )}
-            </p>
+            </div>
           </div>
           <Button
             type="text"
@@ -306,10 +316,25 @@ export function PremiumLearnerDashboard({
   );
 }
 
-function TodayClassCard({ session }: { session: ApiLearnerClassSession }) {
+function LearnerClassCard({ session, mode }: { session: ApiLearnerClassSession; mode: "today" | "upcoming" }) {
   const thumb =
     session.teacherImageUrl?.trim() || teacherThumbForSubject(session.subject);
   const svg = thumb.endsWith(".svg");
+
+  const whenBadge =
+    mode === "today" ? (
+      <span className="inline-flex items-center rounded-full bg-emerald-500/15 px-2.5 py-0.5 text-xs font-bold text-emerald-800 dark:text-emerald-200">
+        Today
+      </span>
+    ) : session.isTomorrow ? (
+      <span className="inline-flex items-center rounded-full bg-amber-500/20 px-2.5 py-0.5 text-xs font-bold text-amber-950 dark:text-amber-100">
+        Tomorrow
+      </span>
+    ) : (
+      <span className="inline-flex max-w-full truncate rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-semibold text-sky-950 dark:text-sky-100">
+        {session.dayLabel}
+      </span>
+    );
 
   return (
     <article className="group overflow-hidden rounded-2xl border border-border-soft bg-card shadow-sm transition hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-md dark:shadow-none">
@@ -328,10 +353,8 @@ function TodayClassCard({ session }: { session: ApiLearnerClassSession }) {
 
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center rounded-full bg-emerald-500/15 px-2.5 py-0.5 text-xs font-bold text-emerald-800 dark:text-emerald-200">
-              Today
-            </span>
-            <span className="inline-flex items-center rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-semibold ">
+            {whenBadge}
+            <span className="inline-flex items-center rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-semibold">
               {session.subject}
             </span>
           </div>
