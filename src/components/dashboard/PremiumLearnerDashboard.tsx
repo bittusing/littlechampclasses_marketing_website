@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarOutlined, ClockCircleOutlined, PaperClipOutlined } from "@ant-design/icons";
+import {CalendarOutlined, ClockCircleOutlined, LeftOutlined, PaperClipOutlined, RightOutlined } from "@ant-design/icons";
 import { Button, Drawer, Select, Skeleton, Space } from "antd";
 import Image from "next/image";
 import Link from "next/link";
@@ -80,7 +80,7 @@ export function PremiumLearnerDashboard({
   }, []);
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-12">
+    <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-12">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h1 className="font-display text-3xl font-extrabold tracking-tight text-foreground">
@@ -93,7 +93,7 @@ export function PremiumLearnerDashboard({
         <Button
           type="default"
           icon={<CalendarOutlined />}
-          className="!h-11 !rounded-xl !border-2 !border-primary !bg-card !font-semibold !text-primary !shadow-sm !transition-all !duration-200 hover:!bg-primary hover:!text-primary-foreground hover:!shadow-md hover:!shadow-primary/20"
+          className="h-11 rounded-xl border-2 border-primary bg-card font-semibold text-primary shadow-sm transition duration-200 hover:bg-primary hover:text-primary-foreground hover:shadow-md hover:shadow-primary/20 px-4 py-2"
           onClick={openScheduleDrawer}
         >
           Weekly schedule
@@ -102,9 +102,9 @@ export function PremiumLearnerDashboard({
 
       <div className="mt-8 max-w-xl">
         <Select
-          className="w-full [&_.ant-select-selector]:!min-h-11 [&_.ant-select-selector]:!rounded-xl [&_.ant-select-selector]:!border-2 [&_.ant-select-selector]:!border-border-soft [&_.ant-select-selector]:!bg-card [&_.ant-select-selector]:!px-4 [&_.ant-select-selector]:!py-2 [&_.ant-select-selector]:!shadow-sm [&_.ant-select-selector]:!transition-all [&_.ant-select-selector]:!duration-200 hover:[&_.ant-select-selector]:!border-primary/40 [&.ant-select-focused_.ant-select-selector]:!border-primary [&.ant-select-focused_.ant-select-selector]:!shadow-md [&.ant-select-focused_.ant-select-selector]:!shadow-primary/20"
-          dropdownClassName="[&_.ant-select-item]:!px-4 [&_.ant-select-item]:!py-3 [&_.ant-select-item-option-content]:!text-sm [&_.ant-select-item-option-selected]:!bg-primary/10 [&_.ant-select-item-option-active]:!bg-primary/5"
           size="large"
+          className="w-full border-2 border-border-soft bg-card rounded-xl px-4 py-2 shadow-sm transition duration-200 hover:border-primary/40 focus:border-primary focus:shadow-md focus:shadow-primary/20"
+          dropdownClassName="px-4 py-2 text-sm bg-primary/10"
           options={selectOptions}
           value={selectValue}
           onChange={onSelect}
@@ -190,7 +190,7 @@ export function PremiumLearnerDashboard({
             paddingRight: 20,
           },
         }}
-        className="[&_.ant-drawer-close]:!text-foreground [&_.ant-drawer-close]:!top-4 [&_.ant-drawer-close]:!right-4"
+        // className="[&_.ant-drawer-close]:!text-foreground [&_.ant-drawer-close]:!top-4 [&_.ant-drawer-close]:!right-4"
       >
         <div className="mb-6 flex items-center justify-between gap-3 rounded-2xl border border-border-soft bg-card px-3 py-2 shadow-sm dark:shadow-none">
           <Button
@@ -198,9 +198,9 @@ export function PremiumLearnerDashboard({
             size="large"
             onClick={() => bumpWeek(-1)}
             aria-label="Previous week"
-            className="!text-base !font-bold !text-primary hover:!bg-primary/10"
+            className="!text-base !font-bold px-4 py-2 rounded-xl !text-primary hover:!bg-primary/10"
           >
-            ‹
+            <LeftOutlined/>
           </Button>
           <div className="flex-1 text-center">
             <p className="text-xs font-semibold uppercase tracking-wide text-muted">Selected week</p>
@@ -217,9 +217,9 @@ export function PremiumLearnerDashboard({
             size="large"
             onClick={() => bumpWeek(1)}
             aria-label="Next week"
-            className="!text-base !font-bold !text-primary hover:!bg-primary/10"
+            className="!text-base !font-bold px-4 py-2 rounded-xl !text-primary hover:!bg-primary/10"
           >
-            ›
+            <RightOutlined/>
           </Button>
         </div>
 
@@ -249,7 +249,7 @@ export function PremiumLearnerDashboard({
                         className="rounded-xl border border-border-soft bg-card p-3 shadow-sm transition hover:border-primary/30 dark:shadow-none"
                       >
                         <div className="flex gap-3">
-                          <div className="relative h-24 w-16 shrink-0 overflow-hidden rounded-lg bg-foreground/5">
+                          <div className="relative h-15 w-16 shrink-0 overflow-hidden rounded-lg bg-foreground/5">
                             <Image
                               src={
                                 s.teacherImageUrl?.trim()
@@ -331,16 +331,16 @@ function TodayClassCard({ session }: { session: ApiLearnerClassSession }) {
             <span className="inline-flex items-center rounded-full bg-emerald-500/15 px-2.5 py-0.5 text-xs font-bold text-emerald-800 dark:text-emerald-200">
               Today
             </span>
-            <span className="inline-flex items-center rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-semibold text-accent-foreground">
+            <span className="inline-flex items-center rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-semibold ">
               {session.subject}
             </span>
           </div>
 
-          <h3 className="mt-2 font-display text-lg font-extrabold leading-snug text-foreground">
+          <h3 className="mt-1 font-display text-lg font-extrabold leading-snug text-foreground">
             {session.title}
           </h3>
 
-          <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted">
+          <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted">
             <span className="inline-flex items-center gap-1.5">
               <ClockCircleOutlined className="text-primary/80" />
               {session.startsAtLabel}
@@ -352,7 +352,7 @@ function TodayClassCard({ session }: { session: ApiLearnerClassSession }) {
           </div>
 
           {session.statusMicrocopy ? (
-            <div className="mt-3 rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-3 py-2 text-xs font-medium text-emerald-950 dark:text-emerald-100">
+            <div className="mt-1 rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-3 py-2 text-xs font-medium text-emerald-950 dark:text-emerald-100">
               {session.statusMicrocopy}
             </div>
           ) : null}

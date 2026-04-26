@@ -61,7 +61,7 @@ export function SiteHeader() {
                     setOpen(false);
                   }}
                 >
-                  Log out
+                  Log Out
                 </button>
               </>
             ) : (

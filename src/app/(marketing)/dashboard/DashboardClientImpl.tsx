@@ -40,14 +40,14 @@ function DashboardSignedInStrip({
             onClick={onBookDemo}
             className="inline-flex min-h-10 items-center justify-center rounded-xl bg-primary px-4 text-sm font-bold text-primary-foreground shadow-md shadow-primary/20 transition hover:opacity-95"
           >
-            Book a demo
+            Book Another Demo
           </button>
           <button
             type="button"
             className="rounded-xl border border-border-soft px-4 py-2 text-sm font-semibold text-muted transition hover:border-primary/40 hover:text-foreground"
             onClick={onLogout}
           >
-            Log out
+            Log Out
           </button>
         </div>
       </div>
