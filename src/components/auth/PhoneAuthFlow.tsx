@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useRef, useState } from "react";
 import { OtpInput } from "@/components/common/OtpInput";
 import { Button } from "@/components/ui/Button";
@@ -12,6 +12,12 @@ import { ApiError } from "@/lib/api/types";
 import { formatIndianMobileDisplay } from "@/lib/phoneDisplay";
 import { parseIndianMobileNational10 } from "@/lib/phone";
 import { site } from "@/lib/site-config";
+
+function safeReturnTo(raw: string | null): string | null {
+  if (!raw) return null;
+  if (!raw.startsWith("/") || raw.startsWith("//") || raw.includes("://")) return null;
+  return raw;
+}
 
 function formatResendTime(totalSec: number): string {
   const m = Math.floor(totalSec / 60);
@@ -23,6 +29,8 @@ type Step = "phone" | "otp";
 
 export function PhoneAuthFlow() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const returnTo = safeReturnTo(searchParams.get("returnTo"));
   const { signInWithOtp } = useAuth();
   const { sendLoginOtp, secondsLeft, canResendOtp, resetOtpCooldown } = usePhoneAuth();
 
@@ -75,7 +83,8 @@ export function PhoneAuthFlow() {
       setSubmitting(true);
       try {
         const { needsOnboarding } = await signInWithOtp(n, code);
-        router.push(needsOnboarding ? "/onboarding" : "/dashboard");
+        const after = needsOnboarding ? "/onboarding" : returnTo ?? "/dashboard";
+        router.push(after);
         router.refresh();
       } catch (e) {
         setError(e instanceof ApiError ? e.message : "Could not verify OTP.");
@@ -84,7 +93,7 @@ export function PhoneAuthFlow() {
         verifyLock.current = false;
       }
     },
-    [national, router, signInWithOtp],
+    [national, router, signInWithOtp, returnTo],
   );
 
   const onOtpComplete = useCallback(

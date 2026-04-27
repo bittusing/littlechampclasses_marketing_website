@@ -24,6 +24,7 @@ export const mainNav: NavItem[] = [
   { label: "Learn English", href: "/programs/english" },
   { label: "Learn Maths", href: "/programs/maths" },
   { label: "Activity Kits", href: "/programs/activity-kits" },
+  { label: "Practice tests", href: "/tests" },
 ];
 
 export const footerNav: { title: string; links: FooterOrActionLink[] }[] = [
@@ -40,6 +41,7 @@ export const footerNav: { title: string; links: FooterOrActionLink[] }[] = [
     title: "Platform",
     links: [
       { label: "Demo classes (₹9)", openBookDemo: true },
+      { label: "Practice tests", href: "/tests" },
       { label: "My dashboard", href: "/dashboard" },
     ],
   },

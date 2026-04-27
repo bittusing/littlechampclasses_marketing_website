@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { AuthSplitShell } from "@/components/auth/AuthSplitShell";
 import { PhoneAuthFlow } from "@/components/auth/PhoneAuthFlow";
 
@@ -10,7 +11,9 @@ export const metadata: Metadata = {
 export default function LoginPage() {
   return (
     <AuthSplitShell>
-      <PhoneAuthFlow />
+      <Suspense fallback={null}>
+        <PhoneAuthFlow />
+      </Suspense>
     </AuthSplitShell>
   );
 }
